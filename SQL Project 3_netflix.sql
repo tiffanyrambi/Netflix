@@ -107,14 +107,15 @@ GROUP BY g.value
 
 --10.Find each year and the average numbers of content release in India on netflix. 
 --return top 5 year with highest avg content release! 
-SELECT 
-	--country,
-	release_year,
-	COUNT(show_id)
+SELECT TOP 5
+	Year(date_added) AS year,
+	COUNT(*) indian_yearly_contents,
+	ROUND(CAST(COUNT(*) AS float) / (SELECT CAST(COUNT(*) AS float) FROM netflix WHERE country = 'india'), 4) AS avg_indian_contents
 FROM netflix
-WHERE country LIKE '%india%'
-GROUP BY release_year
---blm kelar--ga ngerti soal---
+WHERE country = 'india'
+GROUP BY Year(date_added)
+ORDER BY 3 DESC
+--avg_indian_contents = indian_yearly_contents / all indian contents
 
 --11. List all movies that are documentaries
 SELECT * FROM netflix
