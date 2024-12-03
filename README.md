@@ -152,7 +152,16 @@ GROUP BY g.value
 return top 5 year with highest avg content release!
 
 ```sql
+SELECT TOP 5
+	Year(date_added) AS year,
+	COUNT(*) indian_yearly_contents,
+	ROUND(CAST(COUNT(*) AS float) / (SELECT CAST(COUNT(*) AS float) FROM netflix WHERE country = 'india'), 4) AS avg_indian_contents
+FROM netflix
+WHERE country = 'india'
+GROUP BY Year(date_added)
+ORDER BY 3 DESC
 
+--avg_indian_contents = indian_yearly_contents / all indian contents
 ```
 
 **Objective:** Calculate and rank years by the average number of content releases by India.
